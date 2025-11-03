@@ -60,11 +60,17 @@ export default class UserRepository implements UserRepositoryInterface {
       return await db.tx(async (query) => {
         const user = await query.one(
           `         
-          INSERT INTO users (first_name, last_name, email, password)
-          VALUES ($1, $2, $3, $4)
+          INSERT INTO users (first_name, last_name, email, password, created_at)
+          VALUES ($1, $2, $3, $4, $5)
           RETURNING id, first_name, last_name, email, password
           `,
-          [data.first_name, data.last_name, data.email, data.password]
+          [
+            data.first_name,
+            data.last_name,
+            data.email,
+            data.password,
+            new Date,
+          ]
         );
 
         const formatted: User = new User(
@@ -91,11 +97,13 @@ export default class UserRepository implements UserRepositoryInterface {
         const user = await query.one(
           `         
           UPDATE users SET 
-            first_name, 
-            last_name, 
+            first_name = $1, 
+            last_name = $2, 
+            updated_at = $3
+          WHERE id = $4
           RETURNING id, first_name, last_name, email, password
           `,
-          [data.first_name, data.last_name]
+          [data.first_name, data.last_name, new Date, id]
         );
 
         const formatted: User = new User(

@@ -16,6 +16,9 @@ const db = pg_promise({
   database: pg_db,
   user: pg_user,
   password: pg_password,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 export { pg_host, pg_port, pg_db, pg_user, pg_password, db };

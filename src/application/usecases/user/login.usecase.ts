@@ -8,7 +8,8 @@ export default class LoginUseCase {
     const user = new User(params.email, params.password);
 
     // Check whether the given email is valid
-    if (user.isEmailValid()) {
+    if (!user.isEmailValid()) {
+      console.error("Email sesuai dengan format");
       throw new Error("Parameter email tidak sesuai dengan format");
     }
 
@@ -18,7 +19,14 @@ export default class LoginUseCase {
     );
 
     if (!userDoesExist) {
-      throw new Error("email atau password salah");
+      console.error("User tidak ditemukan");
+      throw new Error("Username atau password salah!");
+    }
+
+    // Compare password
+    const compare = await user.comparePassword(userDoesExist.password);
+    if (!compare) {
+      throw new Error("Username atau password salah!");
     }
 
     return userDoesExist;

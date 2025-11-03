@@ -8,4 +8,6 @@ export default interface TransactionRepositoryInterface {
   }): Promise<Transaction[] | undefined>;
 
   create(data: Transaction, balance: number): Promise<Transaction>;
+
+  topup(data: Transaction, balance: number): Promise<Transaction>;
 }

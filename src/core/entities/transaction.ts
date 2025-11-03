@@ -13,6 +13,7 @@ export default class Transaction {
 
   // Generate invoice number
   generateInvoice() {
-    this.invoice_number = "test";
+    const timestamp = Math.floor(Date.now() / 1000);
+    this.invoice_number = `INV-${timestamp}`;
   }
 }

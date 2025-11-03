@@ -12,15 +12,14 @@ export default class HistoryTransactionUseCase {
 
   async execute(amount: number, user_id: string) {
     const user = await this.userRepository.getUserById(user_id);
-    const money = user?.balance ?? 0;
+    const money = Number(user?.balance) ?? 0;
     const balance = new Balance(money, amount);
 
     let increaseBalance = balance.increase();
     const transaction = new Transaction(user_id, Type.TOPUP, amount);
 
-    return await this.transactionRepository.create(
-      transaction,
-      increaseBalance
-    );
+    transaction.generateInvoice();
+
+    return await this.transactionRepository.topup(transaction, increaseBalance);
   }
 }

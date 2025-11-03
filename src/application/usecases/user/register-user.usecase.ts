@@ -18,12 +18,12 @@ export default class RegisterUserUseCase {
     );
 
     // Check whether the given email is valid
-    if (user.isEmailValid()) {
+    if (!user.isEmailValid()) {
       throw new Error("Parameter email tidak sesuai dengan format");
     }
 
     // Check whether given the given password follows 8 character
-    if (user.isPasswordValid()) {
+    if (!user.isPasswordValid()) {
       throw new Error("Password minimal 8 character");
     }
 
@@ -32,6 +32,9 @@ export default class RegisterUserUseCase {
     if (doesExist) {
       throw new Error("Email sudah terdaftar");
     }
+    
+    // Hash password
+    await user.hashPassword();
 
     return this.userRepository.create(user);
   }
