@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "dev": "npx ts-node src/main.ts"
+    "dev": "npx ts-node src/main.ts",
+    "build": "tsc",
+    "start": "node dist/main.js"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
